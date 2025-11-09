@@ -1,0 +1,5 @@
+{
+  "name": "Vault AI Toolkit",
+  "description": "An Obsidian plugin to automatically generate summaries, tags, and categories for your notes using the Gemini API.",
+  "requestFramePermissions": []
+}

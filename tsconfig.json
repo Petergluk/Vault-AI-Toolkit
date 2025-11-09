@@ -1,0 +1,37 @@
+// vault-ai-toolkit/tsconfig.json
+// Version: 1.1.0
+// Generated on: 2024-10-27T11:00:00Z
+
+/**
+ * @file tsconfig.json
+ * @description TypeScript configuration for the Vault AI Toolkit plugin.
+ * 
+ * @changelog
+ * - 1.1.0 (2024-10-27): Added "DOM.Iterable" to the "lib" array. This is required for the compiler to correctly recognize types for AbortSignal and other modern DOM APIs, fixing a technical debt issue.
+ * - 1.0.0 (initial): Initial configuration.
+ */
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "module": "CommonJS",
+    "target": "ES2018",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES5",
+      "ES6",
+      "ES2018"
+    ]
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}

@@ -1,0 +1,179 @@
+# vault-ai-toolkit/data/rubricator.yaml
+# Version: 1.0.0
+# Generated: 2025-09-12
+# FULL FILE EMITTED: YES
+
+# Дефолтная структура папок для импорта в менеджер категорий
+# Пользователь может импортировать эту структуру и затем настроить под себя
+
+name: "Мой Архив Знаний"
+version: "1.0.0"
+description: "Универсальная структура для организации текстовых материалов"
+
+structure:
+  - folder: "00_INBOX"
+    description: "Входящие материалы для обработки"
+    icon: "📥"
+    auto_rules:
+      - "Все новые файлы попадают сюда по умолчанию"
+      - "Требует регулярной обработки (раз в неделю)"
+    
+  - folder: "01_LABORATORIUM"
+    description: "Рабочая мастерская - тексты в процессе"
+    icon: "⚗️"
+    subfolders:
+      - folder: "Черновики"
+        description: "Необработанные тексты и наброски"
+      - folder: "Исследования"
+        description: "Материалы для изучения"
+      - folder: "Идеи"
+        description: "Быстрые заметки и мысли"
+        
+  - folder: "02_BIBLIOTHECA"
+    description: "Библиотека готовых знаний"
+    icon: "📚"
+    subfolders:
+      - folder: "1_SPIRITUS_Дух"
+        description: "Концепции, смыслы, мировоззрение"
+        icon: "✨"
+        subfolders:
+          - folder: "THEORIA"
+            description: "Теоретические концепции"
+            subfolders:
+              - folder: "Осознанность_и_Внимание"
+              - folder: "Поток_и_Процессуальность"
+              - folder: "Смысл_и_Ценности"
+              - folder: "Философия_и_Мировоззрение"
+          - folder: "PRAXIS"
+            description: "Практики работы с мышлением"
+            subfolders:
+              - folder: "Текстовые_практики"
+              - folder: "Практики_Вопрошания"
+              
+      - folder: "2_ANIMA_Душа"
+        description: "Эмоции, переживания, отношения"
+        icon: "💗"
+        subfolders:
+          - folder: "THEORIA"
+            description: "Природа эмоций и отношений"
+            subfolders:
+              - folder: "Природа_Эмоций"
+              - folder: "Динамика_Отношений"
+              - folder: "Травма_и_Исцеление"
+          - folder: "PRAXIS"
+            description: "Практики работы с чувствами"
+            subfolders:
+              - folder: "Работа_с_Эмоциями"
+              - folder: "Коммуникативные_практики"
+              
+      - folder: "3_CORPUS_Тело"
+        description: "Ощущения, движение, воплощение"
+        icon: "🤸"
+        subfolders:
+          - folder: "THEORIA"
+            description: "Философия телесности"
+            subfolders:
+              - folder: "Философия_Embodiment"
+              - folder: "Психосоматика"
+          - folder: "PRAXIS"
+            description: "Телесные практики"
+            subfolders:
+              - folder: "Дыхательные_практики"
+              - folder: "Двигательные_практики"
+              - folder: "Контактные_практики"
+              
+  - folder: "03_PROJECTS"
+    description: "Активные проекты"
+    icon: "🚀"
+    subfolders:
+      - folder: "Проект_Шаблон"
+        description: "Пример структуры проекта"
+        subfolders:
+          - folder: "Концепция"
+          - folder: "Материалы"
+          - folder: "Маркетинг"
+          - folder: "Результаты"
+          
+  - folder: "04_AREAS"
+    description: "Сферы жизни"
+    icon: "🌍"
+    subfolders:
+      - folder: "Личное"
+        subfolders:
+          - folder: "Дневник"
+          - folder: "Рефлексия"
+          - folder: "Здоровье"
+      - folder: "Профессиональное"
+        subfolders:
+          - folder: "Развитие"
+          - folder: "Клиенты"
+          - folder: "Методы"
+      - folder: "Финансы"
+        subfolders:
+          - folder: "Бюджет"
+          - folder: "Инвестиции"
+          - folder: "Долги"
+      - folder: "Творчество"
+        subfolders:
+          - folder: "Музыка"
+          - folder: "Тексты"
+          - folder: "Видео"
+          
+  - folder: "05_RESOURCES"
+    description: "Внешние ресурсы"
+    icon: "📦"
+    subfolders:
+      - folder: "Книги_Конспекты"
+      - folder: "Статьи_Исследования"
+      - folder: "Цитаты"
+      - folder: "Чужие_Практики"
+      - folder: "Ссылки_и_Источники"
+      
+  - folder: "06_ARCHIVE"
+    description: "Архив завершенного"
+    icon: "🗄️"
+    subfolders:
+      - folder: "Завершенные_Проекты"
+      - folder: "Старые_Материалы"
+      - folder: "Устаревшие_Анонсы"
+
+# Правила сортировки по умолчанию
+# Эти правила применяются автоматически при импорте
+default_sorting_rules:
+  - pattern: "анонс"
+    target_folder: "06_ARCHIVE/Устаревшие_Анонсы"
+    condition: "older_than_30_days"
+    
+  - pattern: "черновик|draft"
+    target_folder: "01_LABORATORIUM/Черновики"
+    
+  - pattern: "практика|упражнение"
+    target_folder: "02_BIBLIOTHECA/*/PRAXIS"
+    note: "AI определит конкретную подпапку"
+    
+  - pattern: "концепция|теория|философия"
+    target_folder: "02_BIBLIOTHECA/*/THEORIA"
+    note: "AI определит конкретную подпапку"
+    
+  - pattern: "проект_"
+    target_folder: "03_PROJECTS"
+    
+  - pattern: "личн|дневник"
+    target_folder: "04_AREAS/Личное"
+    
+  - pattern: "книг|статья|источник"
+    target_folder: "05_RESOURCES"
+
+# Метаданные для AI-обработки
+ai_processing:
+  instructions: |
+    При анализе файла определи:
+    1. К какой философской категории он относится (Дух/Душа/Тело)
+    2. Это теория или практика?
+    3. Если это проект - создай для него отдельную папку
+    4. Учитывай статус и качество при выборе папки
+  
+  priority_rules:
+    - "Файлы с quality_score >= 4 идут в BIBLIOTHECA"
+    - "Файлы со статусом 'идея' или 'черновик' идут в LABORATORIUM"
+    - "Файлы старше 1 года без тегов идут в ARCHIVE"

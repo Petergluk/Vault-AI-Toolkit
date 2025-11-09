@@ -1,0 +1,12 @@
+
+{
+	"id": "vault-ai-toolkit",
+	"name": "Vault AI Toolkit",
+	"version": "1.2.0",
+	"minAppVersion": "1.0.0",
+	"description": "Превращает хранилище в живую, семантически связанную базу знаний с помощью AI. Анализирует, сортирует и устраняет дубликаты по системе 'Координаты Смысла'.",
+	"author": "User & AI Architect",
+	"authorUrl": "",
+	"fundingUrl": "",
+	"isDesktopOnly": false
+}
