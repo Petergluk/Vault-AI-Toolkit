@@ -1,7 +1,7 @@
 {
-  "name": "vault-ai-toolkit",
+  "name": "semantic-locus-ai",
   "version": "1.0.1",
-  "description": "AI-powered toolkit for Obsidian",
+  "description": "AI-powered toolkit for Obsidian to find your 'Coordinates of Meaning'",
   "main": "main.js",
   "files": [
     "main.js",

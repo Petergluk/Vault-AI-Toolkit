@@ -1,5 +1,5 @@
 {
-  "name": "Vault AI Toolkit",
-  "description": "An Obsidian plugin to automatically generate summaries, tags, and categories for your notes using the Gemini API.",
+  "name": "Semantic Locus AI",
+  "description": "An Obsidian plugin that uses AI to find the 'coordinates of meaning' in your knowledge vault, automatically generating summaries, tags, and semantic links.",
   "requestFramePermissions": []
 }

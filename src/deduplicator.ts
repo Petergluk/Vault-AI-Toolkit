@@ -119,16 +119,16 @@ class DuplicateManagerModal extends Modal {
         contentEl.createEl('h2', { text: `Найдено ${this.duplicateGroups.length} групп дубликатов` });
         contentEl.createEl('p', { text: 'Выберите, какой файл оставить в каждой группе. Невыбранные файлы в группах будут удалены.' });
 
-        const container = contentEl.createDiv({ cls: 'vait-deduplicator-container' });
+        const container = contentEl.createDiv({ cls: 'slai-deduplicator-container' });
         
         let applyButton: ButtonComponent;
 
         this.duplicateGroups.forEach((group) => {
-            const groupEl = container.createDiv({ cls: 'vait-deduplicator-group' });
+            const groupEl = container.createDiv({ cls: 'slai-deduplicator-group' });
             groupEl.createEl('h4', { text: `Группа дубликатов:` });
 
             const setting = new Setting(groupEl);
-            setting.controlEl.addClass('vait-radio-group');
+            setting.controlEl.addClass('slai-radio-group');
             
             group.files.forEach(file => {
                 const radioContainer = setting.controlEl.createDiv();

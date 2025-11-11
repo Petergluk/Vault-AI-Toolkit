@@ -1,10 +1,10 @@
 
 {
 	"id": "vault-ai-toolkit",
-	"name": "Vault AI Toolkit",
+	"name": "Semantic Locus AI",
 	"version": "1.2.0",
 	"minAppVersion": "1.0.0",
-	"description": "Превращает хранилище в живую, семантически связанную базу знаний с помощью AI. Анализирует, сортирует и устраняет дубликаты по системе 'Координаты Смысла'.",
+	"description": "Находит 'Координаты Смысла' в вашем хранилище. Анализирует, связывает и устраняет дубликаты с помощью AI.",
 	"author": "User & AI Architect",
 	"authorUrl": "",
 	"fundingUrl": "",

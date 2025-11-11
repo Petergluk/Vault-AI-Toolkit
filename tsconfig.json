@@ -1,10 +1,10 @@
-// vault-ai-toolkit/tsconfig.json
+// semantic-locus-ai/tsconfig.json
 // Version: 1.1.0
 // Generated on: 2024-10-27T11:00:00Z
 
 /**
  * @file tsconfig.json
- * @description TypeScript configuration for the Vault AI Toolkit plugin.
+ * @description TypeScript configuration for the Semantic Locus AI plugin.
  * 
  * @changelog
  * - 1.1.0 (2024-10-27): Added "DOM.Iterable" to the "lib" array. This is required for the compiler to correctly recognize types for AbortSignal and other modern DOM APIs, fixing a technical debt issue.

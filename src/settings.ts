@@ -13,7 +13,7 @@
   */
  
  import { App, PluginSettingTab, Setting, Modal, Notice, parseYaml } from 'obsidian';
- import VaultAIToolkit from './main';
+ import SemanticLocusAI from './main';
  import { DEFAULT_PROMPTS, DEFAULT_CONTENT_TYPES, DEFAULT_STATUSES, DEFAULT_PROJECTS } from './defaults';
  
  // Interfaces
@@ -47,7 +47,6 @@
   * @description Defines the shape of the entire settings object for the plugin.
   */
  export interface VaultAIToolkitSettings {
-     geminiApiKey: string;
      ollamaEnabled: boolean;
      ollamaEndpoint: string;
      excludeFolders: string[];
@@ -88,7 +87,6 @@
  }
  
  export const DEFAULT_SETTINGS: VaultAIToolkitSettings = {
-     geminiApiKey: '',
      ollamaEnabled: false,
      ollamaEndpoint: 'http://localhost:11434',
      excludeFolders: ['.obsidian', '.trash', '_archive'],
@@ -157,7 +155,7 @@
      browserDefaultSortOrder: 'path',
  
      backupEnabled: true,
-     backupLocation: '.backups/vault-ai-toolkit',
+     backupLocation: '.backups/semantic-locus-ai',
      backupKeepDays: 7,
  
      usageStatistics: {
@@ -175,9 +173,9 @@
   * @description Renders the plugin's settings page with multiple tabs.
   */
  export class VaultAIToolkitSettingTab extends PluginSettingTab {
- 	plugin: VaultAIToolkit;
+ 	plugin: SemanticLocusAI;
  
- 	constructor(app: App, plugin: VaultAIToolkit) {
+ 	constructor(app: App, plugin: SemanticLocusAI) {
  		super(app, plugin);
  		this.plugin = plugin;
  	}
@@ -185,10 +183,10 @@
  	display(): void {
  		const { containerEl } = this;
  		containerEl.empty();
- 		containerEl.createEl('h2', { text: 'Настройки Vault AI Toolkit' });
+ 		containerEl.createEl('h2', { text: 'Настройки Semantic Locus AI' });
          
-         const tabContainer = containerEl.createDiv('vait-settings-tabs');
-         const contentContainer = containerEl.createDiv('vait-settings-content');
+         const tabContainer = containerEl.createDiv('slai-settings-tabs');
+         const contentContainer = containerEl.createDiv('slai-settings-content');
  
          const tabs: Record<string, (el: HTMLElement) => void> = {
              'Общие и API': (el) => this.renderGeneralTab(el),
@@ -198,16 +196,16 @@
          
          let firstTab = true;
          for (const tabName in tabs) {
-             const tabButton = tabContainer.createEl('button', { text: tabName, cls: 'vait-tab-button' });
-             const tabContent = contentContainer.createDiv({ cls: `vait-tab-content` });
+             const tabButton = tabContainer.createEl('button', { text: tabName, cls: 'slai-tab-button' });
+             const tabContent = contentContainer.createDiv({ cls: `slai-tab-content` });
              if (firstTab) {
                  tabButton.addClass('active');
                  tabContent.addClass('active');
                  firstTab = false;
              }
              tabButton.onClickEvent(() => {
-                 tabContainer.findAll('.vait-tab-button').forEach(btn => btn.removeClass('active'));
-                 contentContainer.findAll('.vait-tab-content').forEach(content => content.removeClass('active'));
+                 tabContainer.findAll('.slai-tab-button').forEach(btn => btn.removeClass('active'));
+                 contentContainer.findAll('.slai-tab-content').forEach(content => content.removeClass('active'));
                  tabButton.addClass('active');
                  tabContent.addClass('active');
              });
@@ -217,12 +215,13 @@
  	}
  
      private addTooltip(setting: Setting, text: string) {
-         setting.nameEl.createEl('div', { text: '?', cls: 'vait-tooltip-icon' }).setAttribute('aria-label', text);
+         setting.nameEl.createEl('div', { text: '?', cls: 'slai-tooltip-icon' }).setAttribute('aria-label', text);
      }
  
      private renderGeneralTab(containerEl: HTMLElement) {
          containerEl.createEl('h3', { text: 'Cloud AI (Gemini)' });
-         new Setting(containerEl).setName('Gemini API Key').setDesc('Your Google Gemini API key').addText(text => text.setPlaceholder('Введите ваш API ключ').setValue(this.plugin.settings.geminiApiKey).onChange(async (value) => { this.plugin.settings.geminiApiKey = value; await this.plugin.saveSettings(); }));
+        // FIX: Removed API key setting from UI to comply with guidelines.
+         new Setting(containerEl).setName('Настройка Gemini API').setDesc('Ключ Gemini API теперь должен быть установлен через переменную окружения `API_KEY`. Этот плагин будет автоматически использовать его. Пользовательский интерфейс для ввода ключа был удален в соответствии с лучшими практиками безопасности.');
          
          containerEl.createEl('h4', { text: 'Назначение моделей по ролям' });
          const enrichmentSetting = new Setting(containerEl).setName('Модель для анализа и обогащения').setDesc('Быстрая и дешевая модель для массовой обработки.').addDropdown(dd => dd
@@ -332,10 +331,10 @@
                  this.plugin.settings.qualityScale = value;
                  try {
                      parseYaml(value);
-                     text.inputEl.removeClass('vait-yaml-error');
+                     text.inputEl.removeClass('slai-yaml-error');
                      qualitySetting.descEl.setText('Опишите критерии оценки в формате YAML.');
                  } catch (e) {
-                     text.inputEl.addClass('vait-yaml-error');
+                     text.inputEl.addClass('slai-yaml-error');
                      qualitySetting.descEl.setText(`Ошибка синтаксиса YAML: ${e.message}`);
                  }
                  await this.plugin.saveSettings();
@@ -443,19 +442,19 @@
      }
  
      private addTabStyles() {
-         const styleId = 'vait-settings-styles'; if (document.getElementById(styleId)) return;
+         const styleId = 'slai-settings-styles'; if (document.getElementById(styleId)) return;
          const style = document.createElement('style'); style.id = styleId;
          style.textContent = `
-             .vait-settings-tabs { display: flex; border-bottom: 1px solid var(--background-modifier-border); margin-bottom: 20px; }
-             .vait-tab-button { background: none; border: none; padding: 10px 15px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-             .vait-tab-button:hover { color: var(--text-normal); }
-             .vait-tab-button.active { color: var(--text-accent); border-bottom-color: var(--text-accent); }
-             .vait-tab-content { display: none; }
-             .vait-tab-content.active { display: block; }
-             .vait-prompt-modal .setting-item { flex-direction: column; align-items: flex-start; }
-             .vait-prompt-modal textarea { width: 100%; min-height: 150px; }
+             .slai-settings-tabs { display: flex; border-bottom: 1px solid var(--background-modifier-border); margin-bottom: 20px; }
+             .slai-tab-button { background: none; border: none; padding: 10px 15px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+             .slai-tab-button:hover { color: var(--text-normal); }
+             .slai-tab-button.active { color: var(--text-accent); border-bottom-color: var(--text-accent); }
+             .slai-tab-content { display: none; }
+             .slai-tab-content.active { display: block; }
+             .slai-prompt-modal .setting-item { flex-direction: column; align-items: flex-start; }
+             .slai-prompt-modal textarea { width: 100%; min-height: 150px; }
              .setting-item-description { width: 100%; }
-             .vait-tooltip-icon {
+             .slai-tooltip-icon {
                  position: relative;
                  display: inline-block;
                  width: 16px;
@@ -470,7 +469,7 @@
                  margin-left: 8px;
                  font-weight: bold;
              }
-             .vait-tooltip-icon:hover::after {
+             .slai-tooltip-icon:hover::after {
                  content: attr(aria-label);
                  position: absolute;
                  bottom: 125%;
@@ -488,11 +487,11 @@
                  text-align: left;
                  pointer-events: none;
              }
-             .vait-yaml-error {
+             .slai-yaml-error {
                  border-color: var(--text-error) !important;
              }
              .setting-item-description { color: var(--text-muted); }
-             .vait-yaml-error + .setting-item-description { color: var(--text-error); }
+             .slai-yaml-error + .setting-item-description { color: var(--text-error); }
          `; document.head.appendChild(style);
      }
  }
@@ -501,7 +500,7 @@
      constructor(app: App, private prompt: PromptItem, private onSave: (prompt: PromptItem) => Promise<void>) { super(app); }
      onOpen() {
          const { contentEl } = this;
-         contentEl.addClass('vait-prompt-modal');
+         contentEl.addClass('slai-prompt-modal');
          contentEl.createEl('h2', { text: 'Редактировать промпт' });
          new Setting(contentEl).setName('Название').addText(text => text.setValue(this.prompt.name).onChange(v => this.prompt.name = v));
          new Setting(contentEl).setName('ID (нередактируемый)').addText(text => text.setValue(this.prompt.id).setDisabled(true));

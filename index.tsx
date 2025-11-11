@@ -1,9 +1,7 @@
-// vault-ai-toolkit/index.tsx
-// v1.0.0 @ 2025-09-19 15:00:00
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './src/App';
+import App from './App';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

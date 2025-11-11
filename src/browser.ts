@@ -340,7 +340,7 @@
              })
              .settingEl.createDiv('', (el) => {
                  scoreValueEl = el;
-                 el.addClass('vait-quality-score-value');
+                 el.addClass('slai-quality-score-value');
                  el.setText(`${this.newScore} / 10`);
              });
  
@@ -404,7 +404,7 @@
  
      async onOpen() {
          const container = this.containerEl.children[1] as HTMLElement;
-         container.addClass('vait-visual-browser');
+         container.addClass('slai-visual-browser');
          this.renderer = new BrowserRenderer(container);
          this.addStyles();
          this.renderer.buildLayout();
@@ -797,11 +797,11 @@
      }
  
      private addStyles() {
-         const styleId = 'vait-browser-styles'; if (document.getElementById(styleId)) return;
+         const styleId = 'slai-browser-styles'; if (document.getElementById(styleId)) return;
          const style = document.createElement('style'); style.id = styleId;
          style.textContent = `
-             .vait-visual-browser .view-header { padding-block: 0 !important; }
-             .vait-visual-browser { display: flex; flex-direction: column; height: 100%; }
+             .slai-visual-browser .view-header { padding-block: 0 !important; }
+             .slai-visual-browser { display: flex; flex-direction: column; height: 100%; }
              .vnb-filters { padding: 5px 10px; background: var(--background-secondary); border-bottom: 1px solid var(--background-modifier-border); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
              .vnb-filters .setting-item { padding: 0; border: none; }
              .vnb-filters .setting-item-info { display: none; }
@@ -848,7 +848,7 @@
              .vnb-stats { font-size: 0.9em; color: var(--text-muted); }
              .vnb-load-more { width: 100%; grid-column: 1 / -1; margin-top: 1rem; }
              .vnb-note-feed .vnb-load-more { grid-column: auto; }
-             .vait-quality-score-value { margin-left: 10px; font-weight: bold; min-width: 50px; text-align: center; }
+             .slai-quality-score-value { margin-left: 10px; font-weight: bold; min-width: 50px; text-align: center; }
          `; document.head.appendChild(style);
      }
  }

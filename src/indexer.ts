@@ -73,7 +73,7 @@
  	constructor(app: App, settings: VaultAIToolkitSettings) {
  		this.app = app;
  		this.settings = settings;
-         this.indexPath = `${this.app.vault.configDir}/plugins/vault-ai-toolkit/metadata_cache.json`;
+         this.indexPath = `${this.app.vault.configDir}/plugins/semantic-locus-ai/metadata_cache.json`;
  	}
  	
      /**
@@ -81,7 +81,7 @@
       * @returns A promise that resolves to the newly created `VaultIndex`.
       */
  	async reindexVault(): Promise<VaultIndex> {
- 		console.log('Vault AI Toolkit: Начинаю переиндексацию хранилища...');
+ 		console.log('Semantic Locus AI: Начинаю переиндексацию хранилища...');
  		const startTime = Date.now();
  		const files = this.app.vault.getMarkdownFiles();
  		const indexedFiles: IndexedFile[] = [];
@@ -112,7 +112,7 @@
  		};
  		await this.saveIndex();
  		const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
- 		console.log(`Vault AI Toolkit: Индексация завершена. Обработано ${indexedFiles.length} файлов за ${elapsed}с`);
+ 		console.log(`Semantic Locus AI: Индексация завершена. Обработано ${indexedFiles.length} файлов за ${elapsed}с`);
  		return this.index;
  	}
  
@@ -364,11 +364,11 @@
                  this.index = { version: '2.8.0', indexed_at: new Date().toISOString(), stats: { total_files: 0, with_ai_metadata: 0, unique_tags: 0 }, files: [], embeddings: {} };
              }
          } catch (error) {
-             console.error('Vault AI Toolkit: Не удалось загрузить индекс:', error);
+             console.error('Semantic Locus AI: Не удалось загрузить индекс:', error);
              this.index = null;
          }
      }
  
- 	private async saveIndex(): Promise<void> { if (!this.index) return; try { await this.app.vault.adapter.write(this.indexPath, JSON.stringify(this.index, null, 2)); } catch (error) { console.error('Vault AI Toolkit: Не удалось сохранить индекс:', error); new Notice('Не удалось сохранить кэш индекса: ' + error.message); } }
+ 	private async saveIndex(): Promise<void> { if (!this.index) return; try { await this.app.vault.adapter.write(this.indexPath, JSON.stringify(this.index, null, 2)); } catch (error) { console.error('Semantic Locus AI: Не удалось сохранить индекс:', error); new Notice('Не удалось сохранить кэш индекса: ' + error.message); } }
      async getStats(): Promise<VaultIndex['stats']> { if (!this.index) await this.loadIndex(); return this.index?.stats || { total_files: 0, with_ai_metadata: 0, unique_tags: 0 }; }
  }

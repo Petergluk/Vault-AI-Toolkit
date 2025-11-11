@@ -22,10 +22,10 @@
  import { DataManager } from './DataManager';
  
  /**
-  * @class VaultAIToolkit
+  * @class SemanticLocusAI
   * @description The main entry point for the Obsidian plugin.
   */
- export default class VaultAIToolkit extends Plugin {
+ export default class SemanticLocusAI extends Plugin {
  	settings: VaultAIToolkitSettings;
  	indexer: VaultIndexer;
  	enrichmentEngine: AIEnrichmentEngine;
@@ -34,7 +34,7 @@
      dataManager: DataManager;
  
  	async onload() {
- 		console.log('Vault AI Toolkit: Загрузка плагина...');
+ 		console.log('Semantic Locus AI: Загрузка плагина...');
  		await this.loadSettings();
          await this.migrateFromYaml();
  
@@ -46,7 +46,7 @@
  
  		this.registerView(VIEW_TYPE_VISUAL_BROWSER, (leaf) => new VisualNoteBrowser(leaf, this.settings, this.indexer, this.enrichmentEngine));
  		
-         this.addRibbonIcon('brain-circuit', 'Vault AI Toolkit', (evt: MouseEvent) => {
+         this.addRibbonIcon('brain-circuit', 'Semantic Locus AI', (evt: MouseEvent) => {
              const menu = new Menu();
              menu.addItem((item) => item.setTitle('Открыть Visual Note Browser').setIcon('layout-grid').onClick(() => this.openVisualBrowser(null, true)));
              menu.addItem((item) => item.setTitle('1. Анализ метаданных в папке').setIcon('sparkles').onClick(() => this.runFileAnalysis()));
@@ -96,12 +96,12 @@
          });
  
          this.registerObsidianProtocolHandler("vault-ai-toolkit", async (params) => {
-             console.log("Vault AI Toolkit: Protocol handler triggered with params:", params);
+             console.log("Semantic Locus AI: Protocol handler triggered with params:", params);
              if (params.action === 'similar' && params.sense_id) {
                  await this.showSimilarFilesInBrowser(params.sense_id);
              } else {
-                 console.error("Vault AI Toolkit: Unknown or malformed action from protocol handler.", params);
-                 new Notice(`Неизвестное действие для Vault AI Toolkit: ${params.action}`);
+                 console.error("Semantic Locus AI: Unknown or malformed action from protocol handler.", params);
+                 new Notice(`Неизвестное действие для Semantic Locus AI: ${params.action}`);
              }
          });
      }
@@ -140,7 +140,7 @@
          this.addCommand({ id: 'categorize-folder', name: 'AI: 2. Предложить перемещение для файлов в папке', callback: () => this.runFileCategorization() });
          
          this.addCommand({ id: 'find-exact-duplicates', name: 'AI: Найти и удалить точные дубликаты в папке', callback: () => this.runExactDeduplication() });
-         this.addCommand({ id: 'clean-metadata', name: 'AI: Удалить метаданные Vault AI Toolkit в папке', callback: () => this.cleanPluginMetadata() });
+         this.addCommand({ id: 'clean-metadata', name: 'AI: Удалить метаданные Semantic Locus AI в папке', callback: () => this.cleanPluginMetadata() });
          this.addCommand({ id: 'find-similar-to-current', name: 'AI: Найти похожие на текущий файл', callback: () => this.findSimilarToCurrentFile() });
  		this.addCommand({ id: 'reindex-vault', name: 'Переиндексировать метаданные хранилища', callback: async () => { new Notice('Переиндексация хранилища...'); await this.indexer.reindexVault(); new Notice('Переиндексация завершена.'); } });
  		this.addCommand({ id: 'find-similar-notes', name: 'AI: Найти похожие заметки и создать отчет', callback: () => this.synthesizer.findAndReportDuplicates(0.85) });
@@ -165,7 +165,7 @@
              id: 'reset-all-settings',
              name: 'RESET: Полный сброс всех настроек плагина',
              callback: async () => {
-                 const confirmed = confirm('Вы уверены, что хотите полностью сбросить ВСЕ настройки Vault AI Toolkit? Это действие необратимо и сотрет ваш API ключ, все словари и промпты.');
+                 const confirmed = confirm('Вы уверены, что хотите полностью сбросить ВСЕ настройки Semantic Locus AI? Это действие необратимо и сотрет ваш API ключ, все словари и промпты.');
                  if (confirmed) {
                      this.settings = DEFAULT_SETTINGS;
                      await this.saveSettings();
@@ -309,7 +309,7 @@
      
      async cleanPluginMetadata() {
          const folder = this.getCurrentFolder(); if (!folder) { new Notice('Не удалось определить текущую папку.'); return; }
-         if (!confirm(`Вы уверены, что хотите удалить все метаданные Vault AI Toolkit из файлов в папке "${folder.path}"?`)) { return; }
+         if (!confirm(`Вы уверены, что хотите удалить все метаданные Semantic Locus AI из файлов в папке "${folder.path}"?`)) { return; }
          const files = this.app.vault.getMarkdownFiles().filter(f => f.path.startsWith(folder.path)); let cleanedCount = 0; const fieldsToRemove = ['suggested_path', 'content_type', 'status', 'quality_score', 'sense_id', 'summary', 'processed_date', 'ai_model', 'project', 'sense_id_plain'];
          for (const file of files) { let changed = false; await this.app.fileManager.processFrontMatter(file, (fm) => { for (const field of fieldsToRemove) { if (fm[field]) { delete fm[field]; changed = true; } } }); if (changed) cleanedCount++; }
          await this.indexer.reindexVault(); new Notice(`Очищено ${cleanedCount} файлов.`);
@@ -324,7 +324,7 @@
                  let changed = false;
                  await this.app.fileManager.processFrontMatter(file, (fm) => { if (fm.embedding) { delete fm.embedding; changed = true; } });
                  if (changed) cleanedCount++;
-             } catch (e) { console.warn(`[Vault AI Toolkit] Пропущен файл с некорректным YAML: ${file.path}.`); }
+             } catch (e) { console.warn(`[Semantic Locus AI] Пропущен файл с некорректным YAML: ${file.path}.`); }
          }
          await this.indexer.reindexVault();
          notice.hide();
@@ -349,7 +349,7 @@
          } catch (error) { notice.hide(); new Notice('Ошибка при поиске: ' + error.message); console.error(error); }
      }
  	
- 	onunload() { console.log('Vault AI Toolkit выгружен'); }
+ 	onunload() { console.log('Semantic Locus AI выгружен'); }
  
  	async loadSettings() {
          const savedData = await this.loadData();
@@ -385,7 +385,7 @@
              return;
          }
          
-         new Notice('Vault AI Toolkit: Обнаружена старая папка /data. Начинаю миграцию...', 10000);
+         new Notice('Semantic Locus AI: Обнаружена старая папка /data. Начинаю миграцию...', 10000);
  
          try {
              const loadYaml = async (fileName: string): Promise<any> => {
